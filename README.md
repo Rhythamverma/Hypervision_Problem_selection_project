@@ -26,6 +26,8 @@ Follow these instructions to get a copy of the project up and running on your lo
     git clone [https://github.com/Rhythamverma/Hypervision_Problem_selection_project.git](https://github.com/Rhythamverma/Hypervision_Problem_selection_project.git)
     cd Hypervision_Problem_selection_project
     ```
+    https://github.com/Rhythamverma/Hypervision_Problem_selection_project.git
+    
 
 2.  **(Recommended) Create and activate a virtual environment:**
     ```bash
