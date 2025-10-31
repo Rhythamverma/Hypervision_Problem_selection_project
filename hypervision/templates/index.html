@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hypervision Problem Selection Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="banner">
+        <h1>Hypervision Problem Statement Portal By Rhytham Verma</h1>
+    </header>
+    <main class="container">
+        {% if status and message %}
+        <div class="alert {{ 'alert-success' if status == 'success' else 'alert-error' }}">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <form class="selection-form" method="POST" action="{{ url_for('select') }}">
+            <div class="form-row">
+                <div class="field">
+                    <label for="name">Name</label>
+                    <input id="name" name="name" type="text" required placeholder="Your full name" />
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" required placeholder="you@example.com" />
+                </div>
+            </div>
+
+            <h2 class="section-title">Select a Problem Statement</h2>
+
+            <div class="cards-grid">
+                {% for pid in range(1, num_problems + 1) %}
+                    {% set filled = counts.get(pid, 0) %}
+                    {% set is_full = filled >= max_per_problem %}
+                    <input
+                        type="radio"
+                        name="problem_id"
+                        value="{{ pid }}"
+                        id="problem-{{ pid }}"
+                        {% if is_full %}disabled{% endif %}
+                        required
+                        class="visually-hidden"
+                    />
+                    <label class="card {{ 'full' if is_full else '' }}" for="problem-{{ pid }}">
+                        <div class="card-title">Problem Statement {{ pid }}</div>
+                        <div class="card-subtitle">
+                            {{ filled }} / {{ max_per_problem }} selected
+                        </div>
+                        {% if is_full %}
+                        <div class="badge">Full</div>
+                        {% endif %}
+                    </label>
+                {% endfor %}
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn-primary">Submit</button>
+            </div>
+        </form>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        (function(){
+            const enabledRadios = Array.from(document.querySelectorAll('input[name="problem_id"]:not([disabled])'));
+            if (enabledRadios.length === 0) {
+                const btn = document.querySelector('.btn-primary');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = 'All problems are full';
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
+
+
